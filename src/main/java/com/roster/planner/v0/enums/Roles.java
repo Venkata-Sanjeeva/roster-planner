@@ -1,8 +1,9 @@
 package com.roster.planner.v0.enums;
 
 public enum Roles {
-	USER,
-	ADMIN,
-	MENTOR
+	EMPLOYEE,
+	TEAM_LEAD,
+	SHIFT_MANAGER,
+	MANAGER
 }
 

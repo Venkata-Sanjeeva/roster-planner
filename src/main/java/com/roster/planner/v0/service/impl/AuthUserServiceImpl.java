@@ -22,13 +22,15 @@ public class AuthUserServiceImpl implements AuthUserService {
     @Override
 	public RegisterResponse register(RegisterRequest request, String role) {
     	
-    	Roles finalizedRole =  Roles.USER;
+    	Roles finalizedRole =  Roles.EMPLOYEE;
     		
-    	if(role.toLowerCase().equals("admin")) {
-    		finalizedRole = Roles.ADMIN;
-    	} else if(role.toLowerCase().equals("mentor")) {
-    		finalizedRole = Roles.MENTOR;
-    	}
+    	if(role.toLowerCase().contains("lead")) {
+    		finalizedRole = Roles.TEAM_LEAD;
+    	} else if(role.toLowerCase().contains("shift")) {
+    		finalizedRole = Roles.SHIFT_MANAGER;
+    	} else if (role.toLowerCase().equals("manager")){
+			finalizedRole = Roles.MANAGER;
+		}
 
 		User savedUser = userService.registerUser(request.getName(), request.getEmail(), request.getPassword(), finalizedRole);
 
@@ -55,7 +57,7 @@ public class AuthUserServiceImpl implements AuthUserService {
 	    		.userUID(user.getUserUID())
 	            .email(user.getEmail())
 	            .token(token)
-	            .role(user.getRole().toString())
+	            .role(Roles.valueOf(user.getRole()))
 	            .build();
 	}
 }
