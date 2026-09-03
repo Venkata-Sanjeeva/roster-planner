@@ -4,6 +4,7 @@ public enum Roles {
 	EMPLOYEE,
 	TEAM_LEAD,
 	SHIFT_MANAGER,
-	MANAGER
+	MANAGER,
+	ADMIN
 }
 
