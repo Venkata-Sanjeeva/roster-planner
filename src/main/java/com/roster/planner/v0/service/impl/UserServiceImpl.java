@@ -39,6 +39,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
 
         user.setUserUID(IdentifierGenerator.generate(role.toString()));
+        user.setEmpUID(IdentifierGenerator.generate("EMP"));
         user.setName(name);
         user.setEmail(email);
 
