@@ -29,6 +29,9 @@ public class User implements UserDetails {
     @NotBlank(message = "User UID is required")
     private String userUID;
 
+    @NotBlank(message = "Employee ID is required.")
+    private String empUID;
+
     @NotBlank(message = "Password is required")
     private String password;
 
