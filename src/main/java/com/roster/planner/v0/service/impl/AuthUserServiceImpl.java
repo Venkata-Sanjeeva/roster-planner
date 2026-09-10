@@ -51,13 +51,13 @@ public class AuthUserServiceImpl implements AuthUserService {
 	    
 	    User user = userService.getUserByEmail(request.getEmail());
 
-	    String token = jwtUtil.generateTokenUsingEmailAndRole(user.getEmail(), Roles.valueOf(user.getRole()));
+	    String token = jwtUtil.generateTokenUsingEmailAndRole(user.getEmail(), user.getRole());
 
 	    return LoginResponse.builder()
 	    		.userUID(user.getUserUID())
 	            .email(user.getEmail())
 	            .token(token)
-	            .role(Roles.valueOf(user.getRole()))
+	            .role(user.getRole())
 	            .build();
 	}
 }

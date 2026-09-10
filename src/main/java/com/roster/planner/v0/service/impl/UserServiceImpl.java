@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -27,6 +29,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUserByEmail(String email) {
         return userRepo.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User with " + email + " not found!"));
+    }
+
+    public User getUserByEmpUID(String empUID) {
+        return userRepo.findByEmpUID(empUID).orElseThrow(() -> new UserNotFoundException("User with " + empUID + " not found!"));
     }
 
 	@Override
@@ -45,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
         user.setPassword(passwordEncoder.encode(password));
 
-    	user.setRole(role.toString());
+    	user.setRole(role);
 
         return userRepo.save(user);
     }
@@ -54,6 +60,10 @@ public class UserServiceImpl implements UserService {
     public boolean verifyUser(String userEmail, String userPassword) {
         User user = userRepo.findByEmail(userEmail).orElseThrow(() -> new InvalidLoginCredentialsException("Invalid email or password"));
         return passwordEncoder.matches(userPassword, user.getPassword());
+    }
+
+    public List<User> saveAllUsers(Iterable<User> usersList) {
+        return userRepo.saveAll(usersList);
     }
 
 }
