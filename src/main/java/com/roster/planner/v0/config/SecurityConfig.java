@@ -51,7 +51,7 @@ public class SecurityConfig {
                 			    "/swagger-ui/**",      // Swagger UI HTML and static assets
                 			    "/swagger-ui.html"    // Legacy redirect path
                 			).permitAll()
-                        
+                                .requestMatchers("/api/team/lead/**").hasAuthority("TEAM_LEAD")
                         // 2. Secured Endpoints (Fixed Syntax)
 //                         .requestMatchers("/api/trip/**", "/api/expenses/**").hasAuthority("USER")
                         
