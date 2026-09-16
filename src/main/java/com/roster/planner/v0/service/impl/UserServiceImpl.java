@@ -62,6 +62,8 @@ public class UserServiceImpl implements UserService {
         return passwordEncoder.matches(userPassword, user.getPassword());
     }
 
+    public User saveUser(User user) { return userRepo.save(user); }
+
     public List<User> saveAllUsers(Iterable<User> usersList) {
         return userRepo.saveAll(usersList);
     }

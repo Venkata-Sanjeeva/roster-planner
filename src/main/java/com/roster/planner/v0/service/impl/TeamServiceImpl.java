@@ -112,4 +112,10 @@ public class TeamServiceImpl implements TeamService {
         // Now delete the team
         teamRepo.delete(team);
     }
+
+    public Team getOriginalTeamDetails(String teamUID) {
+        return teamRepo.findByTeamUID(teamUID).orElseThrow(() -> new RuntimeException("Team with UID: " + teamUID + " not found!"));
+    }
+
+    public Team saveTeam(Team team) { return teamRepo.save(team); }
 }
