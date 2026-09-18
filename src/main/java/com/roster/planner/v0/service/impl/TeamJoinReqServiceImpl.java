@@ -4,6 +4,7 @@ import com.roster.planner.v0.entity.Team;
 import com.roster.planner.v0.entity.TeamJoinRequest;
 import com.roster.planner.v0.entity.User;
 import com.roster.planner.v0.enums.RequestStatus;
+import com.roster.planner.v0.exception.JoinRequestNotFound;
 import com.roster.planner.v0.repository.TeamJoinReqRepository;
 import com.roster.planner.v0.request.TeamJoinReqDTO;
 import com.roster.planner.v0.response.TeamJoinReqResDTO;
@@ -73,7 +74,7 @@ public class TeamJoinReqServiceImpl implements TeamJoinReqService {
 
     @Override
     public TeamJoinReqResDTO updateTeamJoinReqStatus(String approvedEmpEmail, String teamJoinReqUID, RequestStatus reqStatus) {
-        TeamJoinRequest joinReqObj = teamJoinReqRepo.findByJoinReqUID(teamJoinReqUID).orElseThrow(() -> new RuntimeException("Team Join Request with UID: " + teamJoinReqUID + " not found!"));
+        TeamJoinRequest joinReqObj = teamJoinReqRepo.findByJoinReqUID(teamJoinReqUID).orElseThrow(() -> new JoinRequestNotFound("Team Join Request with UID: " + teamJoinReqUID + " not found!"));
         User approvedEmpObj = userService.getUserByEmail(approvedEmpEmail);
         Team teamObj = joinReqObj.getTeam();
 
@@ -105,7 +106,7 @@ public class TeamJoinReqServiceImpl implements TeamJoinReqService {
 
     @Override
     public TeamJoinReqResDTO readJoinReq(String reqUID) {
-        TeamJoinRequest teamJoinReqObj = teamJoinReqRepo.findByJoinReqUID(reqUID).orElseThrow(() -> new RuntimeException("Team Join Request with UID: " + reqUID + " not found!"));
+        TeamJoinRequest teamJoinReqObj = teamJoinReqRepo.findByJoinReqUID(reqUID).orElseThrow(() -> new JoinRequestNotFound("Team Join Request with UID: " + reqUID + " not found!"));
         return convertor(teamJoinReqObj);
     }
 

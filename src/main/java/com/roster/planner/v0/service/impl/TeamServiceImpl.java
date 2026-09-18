@@ -2,6 +2,7 @@ package com.roster.planner.v0.service.impl;
 
 import com.roster.planner.v0.entity.Team;
 import com.roster.planner.v0.entity.User;
+import com.roster.planner.v0.exception.TeamNotFoundException;
 import com.roster.planner.v0.repository.TeamRepository;
 import com.roster.planner.v0.request.TeamRequest;
 import com.roster.planner.v0.response.TeamResponse;
@@ -30,6 +31,7 @@ public class TeamServiceImpl implements TeamService {
 
             memberDetails.put("name", member.getName());
             memberDetails.put("email", member.getEmail());
+            memberDetails.put("empUID", member.getEmpUID());
 
             teamMemDetails.add(memberDetails);
         });
@@ -73,13 +75,13 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public TeamResponse getTeam(String teamUID) {
-        Team team = teamRepo.findByTeamUID(teamUID).orElseThrow(() -> new RuntimeException("Team with " + teamUID + " not found!"));
+        Team team = teamRepo.findByTeamUID(teamUID).orElseThrow(() -> new TeamNotFoundException("Team with " + teamUID + " not found!"));
         return convertor(team);
     }
 
     @Override
     public TeamResponse updateTeam(String updatedByEmailID, String teamUID, TeamRequest teamReq) {
-        Team existingTeam = teamRepo.findByTeamUID(teamUID).orElseThrow(() -> new RuntimeException("Team with " + teamUID + " not found!"));
+        Team existingTeam = teamRepo.findByTeamUID(teamUID).orElseThrow(() -> new TeamNotFoundException("Team with " + teamUID + " not found!"));
 
         User projectManager = userService.getUserByEmpUID(teamReq.getPmObj().getPmUID());
         User teamLead = userService.getUserByEmail(updatedByEmailID);
@@ -100,7 +102,7 @@ public class TeamServiceImpl implements TeamService {
 
         Team team = teamRepo.findByTeamUID(teamUID)
                 .orElseThrow(() ->
-                        new RuntimeException("Team not found"));
+                        new TeamNotFoundException("Team with " + teamUID + " not found!"));
 
         // Remove team reference from all users
         for (User user : team.getTeamMembers()) {
@@ -114,7 +116,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     public Team getOriginalTeamDetails(String teamUID) {
-        return teamRepo.findByTeamUID(teamUID).orElseThrow(() -> new RuntimeException("Team with UID: " + teamUID + " not found!"));
+        return teamRepo.findByTeamUID(teamUID).orElseThrow(() -> new TeamNotFoundException("Team with " + teamUID + " not found!"));
     }
 
     public Team saveTeam(Team team) { return teamRepo.save(team); }

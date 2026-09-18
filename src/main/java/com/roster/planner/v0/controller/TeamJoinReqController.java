@@ -20,6 +20,7 @@ public class TeamJoinReqController {
 
     private final TeamJoinReqServiceImpl teamJoinReqService;
 
+    /* In API, Sanjeeava creating a Join_Request for Sundar while Sanjeeva having the Authentication instead of Sundar's Authentication. NEED TO WORK ON THIS ONLY IN BACKEND I BELIEVE */
     @PostMapping("/employee/createJoinReq")
     public ResponseEntity<GlobalResponse<TeamJoinReqResDTO>> createJoinReq(@RequestBody TeamJoinReqDTO joinReqObj) {
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -30,6 +31,7 @@ public class TeamJoinReqController {
                         .build());
     }
 
+    /* Join Req status is getting APPROVED by any TEAM_LEAD, CONDITION: Only the requested Team's Team_Lead should APPROVE the join_req of  employee */
     @PutMapping("/teamLead/updateReqStatus/{teamJoinReqUID}/{status}")
     public ResponseEntity<GlobalResponse<TeamJoinReqResDTO>> updateJoinReqStatus(Principal userDetailsObj,
                                                                                  @PathVariable String teamJoinReqUID,

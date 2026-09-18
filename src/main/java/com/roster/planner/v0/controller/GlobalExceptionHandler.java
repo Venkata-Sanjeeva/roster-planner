@@ -1,8 +1,6 @@
 package com.roster.planner.v0.controller;
 
-import com.roster.planner.v0.exception.EmailAlreadyExistsException;
-import com.roster.planner.v0.exception.InvalidLoginCredentialsException;
-import com.roster.planner.v0.exception.UserNotFoundException;
+import com.roster.planner.v0.exception.*;
 import com.roster.planner.v0.response.ErrorResponse;
 import com.roster.planner.v0.response.GlobalResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -79,6 +77,58 @@ public class GlobalExceptionHandler {
             .build();
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(TeamNotFoundException.class)
+    public ResponseEntity<GlobalResponse<ErrorResponse>> handleTeamNotFoundExcep(Exception ex, HttpServletRequest request) {
+        ErrorResponse error = new ErrorResponse(
+                LocalDateTime.now(),
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+
+        GlobalResponse<ErrorResponse> response = GlobalResponse.<ErrorResponse>builder()
+                .status(HttpStatus.NOT_FOUND.value())
+                .data(error)
+                .message("Team Not Found!!!")
+                .build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(JoinRequestNotFound.class)
+    public ResponseEntity<GlobalResponse<ErrorResponse>> handleJoinReqNotFoundExcep(Exception ex, HttpServletRequest request) {
+        ErrorResponse error = new ErrorResponse(
+                LocalDateTime.now(),
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+
+        GlobalResponse<ErrorResponse> response = GlobalResponse.<ErrorResponse>builder()
+                .status(HttpStatus.NOT_FOUND.value())
+                .data(error)
+                .message("Join Request Not Found!")
+                .build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<GlobalResponse<ErrorResponse>> handleNullException(Exception ex, HttpServletRequest request) {
+        ErrorResponse error = new ErrorResponse(
+                LocalDateTime.now(),
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+
+        GlobalResponse<ErrorResponse> response = GlobalResponse.<ErrorResponse>builder()
+                .status(HttpStatus.NO_CONTENT.value())
+                .message("Null Pointer Exception")
+                .data(error)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
     }
     
     // Generic fallback for any other unexpected errors (500)
