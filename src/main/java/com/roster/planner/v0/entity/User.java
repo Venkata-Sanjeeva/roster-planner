@@ -48,7 +48,7 @@ public class User implements UserDetails {
     @JoinColumn(name = "team_id")
     private Team team;
 
-    @OneToMany(mappedBy = "requestedBy")
+    @OneToMany(mappedBy = "requestedBy", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Leave> empLeaves = new ArrayList<>();
 
     @Override
