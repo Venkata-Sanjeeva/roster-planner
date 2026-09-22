@@ -43,9 +43,9 @@ public class Leave {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "approved_by")
-    private User approvedBy;
+    private User processedBy;
 
     @Column
-    private LocalDateTime approvedAt;
+    private LocalDateTime processedAt;
 
 }

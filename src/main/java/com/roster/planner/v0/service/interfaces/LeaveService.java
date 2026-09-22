@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface LeaveService {
     LeaveResponse createLeaveRequest(LeaveRequest leaveReq);
-    LeaveResponse updateSingleLeaveRequestStatus(String approvedByEmpEmail, String leaveUID, RequestStatus leaveStatus);
-    List<LeaveResponse> updateEmpLeaveRequestStatus(String approvedByEmpEmail, String requestedByEmpUID, LocalDate startDate, LocalDate endDate, RequestStatus leavesStatus);
+    LeaveResponse updateSingleLeaveRequestStatus(String processedByEmpEmail, String leaveUID, RequestStatus leaveStatus);
+    List<LeaveResponse> updateEmpLeaveRequestStatus(String processedByEmpEmail, String requestedByEmpUID, LocalDate startDate, LocalDate endDate, RequestStatus leavesStatus);
     LeaveResponse readLeaveOfEmp(String empEmail, String leaveUID);
     List<LeaveResponse> readAllLeavesOfEmp(String empEmail);
     void deleteLeave(String empEmail, String leaveUID);

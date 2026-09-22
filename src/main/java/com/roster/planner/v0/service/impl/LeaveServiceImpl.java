@@ -24,7 +24,7 @@ public class LeaveServiceImpl implements LeaveService {
 
     private static LeaveResponse convertor(Leave leaveObj) {
         User requestedByEmpDetails = leaveObj.getRequestedBy();
-        User approvedByEmpDetails = leaveObj.getApprovedBy();
+        User processedByEmpDetails = leaveObj.getProcessedBy();
 
 
         LeaveResponse response = LeaveResponse.builder()
@@ -36,9 +36,9 @@ public class LeaveServiceImpl implements LeaveService {
                 .requestedBy(new LeaveResponse.EmpDetails(requestedByEmpDetails.getEmpUID(), requestedByEmpDetails.getName()))
                 .build();
 
-        if(approvedByEmpDetails != null) {
-            response.setApprovedBy(new LeaveResponse.EmpDetails(approvedByEmpDetails.getEmpUID(), approvedByEmpDetails.getName()));
-            response.setApprovedAt(leaveObj.getApprovedAt());
+        if(processedByEmpDetails != null) {
+            response.setProcessedBy(new LeaveResponse.EmpDetails(processedByEmpDetails.getEmpUID(), processedByEmpDetails.getName()));
+            response.setProcessedAt(leaveObj.getProcessedAt());
         }
 
         return response;
@@ -76,22 +76,14 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     @Override
-    public LeaveResponse updateSingleLeaveRequestStatus(String approvedByEmpEmail, String leaveUID, RequestStatus leaveStatus) {
+    public LeaveResponse updateSingleLeaveRequestStatus(String processedByEmpEmail, String leaveUID, RequestStatus leaveStatus) {
 
         Leave leaveObj = leaveRepo.findByLeaveUID(leaveUID).orElseThrow(() -> new RuntimeException("Leave with " + leaveUID + " not found!"));
 
-        User approvedByEmpObj = userService.getUserByEmail(approvedByEmpEmail);
+        User approvedByEmpObj = userService.getUserByEmail(processedByEmpEmail);
 
-        if (leaveStatus == RequestStatus.APPROVED) {
-
-            leaveObj.setApprovedBy(approvedByEmpObj);
-            leaveObj.setApprovedAt(LocalDateTime.now());
-
-        } else if (leaveStatus == RequestStatus.REJECTED) {
-
-            leaveObj.setApprovedBy(null);
-            leaveObj.setApprovedAt(null);
-        }
+        leaveObj.setProcessedBy(approvedByEmpObj);
+        leaveObj.setProcessedAt(LocalDateTime.now());
 
         leaveObj.setLeaveStatus(leaveStatus);
 
@@ -101,23 +93,15 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     @Override
-    public List<LeaveResponse> updateEmpLeaveRequestStatus(String approvedByEmpEmail, String requestedByEmpUID, LocalDate startDate, LocalDate endDate, RequestStatus leavesStatus) {
+    public List<LeaveResponse> updateEmpLeaveRequestStatus(String processedByEmpEmail, String requestedByEmpUID, LocalDate startDate, LocalDate endDate, RequestStatus leavesStatus) {
         User leavesReqByEmpObj = userService.getUserByEmpUID(requestedByEmpUID);
-        User approvedByEmpObj = userService.getUserByEmail(approvedByEmpEmail);
+        User approvedByEmpObj = userService.getUserByEmail(processedByEmpEmail);
 
         List<Leave> empLeavesListInRange = leaveRepo.findByRequestedByAndStartDateGreaterThanEqualAndEndDateLessThanEqual(leavesReqByEmpObj, startDate, endDate);
 
         empLeavesListInRange.forEach(leaveObj -> {
-            if (leavesStatus == RequestStatus.APPROVED) {
-
-                leaveObj.setApprovedBy(approvedByEmpObj);
-                leaveObj.setApprovedAt(LocalDateTime.now());
-
-            } else if (leavesStatus == RequestStatus.REJECTED) {
-
-                leaveObj.setApprovedBy(null);
-                leaveObj.setApprovedAt(null);
-            }
+            leaveObj.setProcessedBy(approvedByEmpObj);
+            leaveObj.setProcessedAt(LocalDateTime.now());
             leaveObj.setLeaveStatus(leavesStatus);
         });
 

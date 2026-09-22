@@ -25,6 +25,6 @@ public class LeaveResponse {
     }
 
     private EmpDetails requestedBy;
-    private EmpDetails approvedBy;
-    private LocalDateTime approvedAt;
+    private EmpDetails processedBy;
+    private LocalDateTime processedAt;
 }
