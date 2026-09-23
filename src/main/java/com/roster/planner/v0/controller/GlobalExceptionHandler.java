@@ -3,6 +3,7 @@ package com.roster.planner.v0.controller;
 import com.roster.planner.v0.exception.*;
 import com.roster.planner.v0.response.ErrorResponse;
 import com.roster.planner.v0.response.GlobalResponse;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,8 @@ import java.util.Map;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    // @ExceptionHandler in GlobalExceptionHandler is designed primarily for exceptions that reach Spring MVC's controller handling layer.
 
     // Handles 404 Not Found
     @ExceptionHandler(UserNotFoundException.class)
