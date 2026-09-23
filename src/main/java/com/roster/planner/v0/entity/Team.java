@@ -53,6 +53,13 @@ public class Team {
             orphanRemoval = true
     )
     private List<TeamJoinRequest> teamJoinRequestList = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "team",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Shift> shiftList = new ArrayList<>();
 }
 
 // PROBLEM

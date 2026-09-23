@@ -52,11 +52,13 @@ public class SecurityConfig {
                 			    "/swagger-ui.html"    // Legacy redirect path
                 			).permitAll()
                                 .requestMatchers("/api/team/lead/**").hasAuthority("TEAM_LEAD")
+                                .requestMatchers("/api/team/any/**").hasAnyAuthority("EMPLOYEE", "TEAM_LEAD", "SHIFT_MANAGER", "MANAGER")
                                 .requestMatchers("/api/joinRequest/employee/**").hasAnyAuthority("EMPLOYEE", "TEAM_LEAD", "SHIFT_LEAD", "MANAGER")
                                 .requestMatchers("/api/joinRequest/teamLead/**").hasAuthority("TEAM_LEAD")
                                 .requestMatchers("/api/joinRequest/any/**").hasAnyAuthority("EMPLOYEE", "TEAM_LEAD", "SHIFT_MANAGER", "MANAGER")
                                 .requestMatchers("/api/leaves/lead/**").hasAuthority("TEAM_LEAD")
                                 .requestMatchers("/api/leaves/emp/**").hasAnyAuthority("EMPLOYEE", "TEAM_LEAD", "SHIFT_MANAGER", "MANAGER")
+                                .requestMatchers("/api/shift/lead/**").hasAuthority("TEAM_LEAD")
                         // 2. Secured Endpoints (Fixed Syntax)
 //                         .requestMatchers("/api/trip/**", "/api/expenses/**").hasAuthority("USER")
                         
