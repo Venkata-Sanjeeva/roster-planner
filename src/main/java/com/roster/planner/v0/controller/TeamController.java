@@ -29,7 +29,7 @@ public class TeamController {
                         .build());
     }
 
-    @GetMapping("/fetch/{teamUID}")
+    @GetMapping("/any/fetch/{teamUID}")
     public ResponseEntity<GlobalResponse<TeamResponse>> getTeam(@PathVariable String teamUID) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(GlobalResponse.<TeamResponse>builder()
